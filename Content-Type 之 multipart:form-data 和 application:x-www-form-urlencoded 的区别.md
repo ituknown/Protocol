@@ -141,7 +141,7 @@ key1=value1&key2=value21&key2=value22&key3=value3
 `multipart/form-data` 数据格式如下：
 
 
-```http
+```
 --
 Content-Disposition: form-data; name=""
 Content-Type:
@@ -209,7 +209,7 @@ profilePhoto=/Users/kali/example.png
 上面示例数据对应的 `multipart/form-data` 请求类型数据体如下：
 
 
-```http
+```
 --
 Content-Disposition: form-data; name="username"
 
@@ -255,7 +255,7 @@ username=%E5%BC%A0%E4%B8%89&age=18
 但是如果使用 `multipart/form-data` 作为请求类型的话，要发送的数据则是：
 
 
-```http
+```
 --
 Content-Disposition: form-data; name="username"
 
@@ -278,7 +278,7 @@ Content-Type: text/plain
 前面的示例中使用的数据边界都是 `--`，这是 `multipart/form-data` 的默认数据边界，对应的请求头是：
 
 
-```http
+```
 Content-Type: multipart/form-data
 ```
 
@@ -286,7 +286,7 @@ Content-Type: multipart/form-data
 但实际上，我们可以使用 `boundary` 来自定义边界，即：
 
 
-```http
+```
 Content-Type: multipart/form-data; boundary=WebKitFormBoundary
 ```
 
@@ -303,7 +303,7 @@ Content-Type: multipart/form-data; boundary=WebKitFormBoundary
 但是啊，我要说但是了！即使你使用 `boundary` 指定了自定义边界数据，原本的 `--` 也是不能省略的。比如我们使用 `boundary` 指定了边界值为 `WebKitFormBoundary`，那么对应的数据体就为：
 
 
-```http
+```
 --WebKitFormBoundary
 Content-Disposition: form-data; name=""
 Content-Type:
@@ -321,7 +321,7 @@ Content-Type:
 再比如，如果你设置的请求头类型为：
 
 
-```http
+```
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 ```
 
@@ -329,7 +329,7 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 那么你的数据边界原本的 `--` 也是不能省略的：
 
 
-```http
+```
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name=""
 Content-Type:
@@ -432,7 +432,7 @@ public void upload(@RequestParam("identityCard") List<MultipartFile> identityCar
 **同时上传合同和头像：**
 
 
-```http
+```
 --
 Content-Disposition: form-data; name="contract"; filename="contract.pdf"
 Content-Type: application/pdf
@@ -450,7 +450,7 @@ Content-Type: image/png
 **同时上传身份证正反面：**
 
 
-```http
+```
 --
 Content-Disposition: form-data; name="identityCard"; filename="idcard1.png"
 Content-Type: image/png
