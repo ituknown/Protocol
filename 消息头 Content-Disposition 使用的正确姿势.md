@@ -8,13 +8,11 @@
 
 `Content-Disposition` 作为请求体的三种用法：
 
-
 ```
 Content-Disposition: form-data
 Content-Disposition: form-data; name="fieldName"
 Content-Disposition: form-data; name="fieldName"; filename="filename.jpg"
 ```
-
 
 你一定注意到了 `form-data`，也就是说 `Content-Disposition` 在请求体中唯一的用法就是用于提交 Form 表单数据。
 
@@ -25,7 +23,6 @@ Content-Disposition: form-data; name="fieldName"; filename="filename.jpg"
 为什么说 `multipart/form-data` 请求类型内部使用了 `Content-Disposition` 头信息呢？
 
 原因是使用 `multipart/form-data` 请求类型时，它会将表单数据封装为如下格式：
-
 
 ```
 --
@@ -41,13 +38,11 @@ Content-Type:
 ----
 ```
 
-
 也就是说，`Content-Disposition` 并不是真正的用于指定消息头。而是在数据体内部使用，用于定义数据的格式，它是请求体的一部分。这一点需要注意，不要真的以为它是请求头的一部分。
 
 `Content-Disposition: form-data` 是用于请求时的固定写法，表示提交的是表单数据，这是 `Content-Disposition` 作为请求体中唯一的用法。
 
 `name=""` 指定的是 form 表单的 name 值，比如有一个表单如下：
-
 
 
 ```html
@@ -63,7 +58,6 @@ Content-Type:
 </body>
 ```
 
-
 假设 `username="张三"`，那么对应的 `multipart/form-data` 数据体为：
 
 
@@ -76,9 +70,7 @@ Content-Type:
 ----
 ```
 
-
 再比如，form 表单中还需要上传文件：
-
 
 ```html
 <body>
@@ -96,18 +88,14 @@ Content-Type:
 </body>
 ```
 
-
 表单的数据为：
-
 
 ```
 username=张三
 profilePhoto=/Users/kali/example.png
 ```
 
-
 那么此时对应的 `multipart/form-data` 数据体为：
-
 
 ```
 --
@@ -123,16 +111,13 @@ Content-Type: image/png
 ----
 ```
 
-
 现在明白 `Content-Disposition` 在请求时的用法了吗？总的来说，在请求中 `Content-Disposition` 唯一用法就是用于表单数据提交中定义它的消息体中的数据。但是该消息头不是我们设置了，而是 `multipart/form-data` 数据体内部使用的，它是作为数据体的一部分，而不是真正用于请求头。
-
 
 # 文件下载
 
 说完了在请求中的用法，那我们再来看下在响应中如何使用。
 
 与请求不同，在响应中 `Content-Disposition` 是真正的作为消息头的一部分，它主要有两种用法：
-
 
 ```
 Content-Disposition: inline
@@ -142,24 +127,19 @@ Content-Disposition: attachment; filename="filename.jpg"
 
 当它的值为 `inline` 时，表示响应的消息作为 HTML 页面的一部分（`inline` 是默认值）。假设你本身想要下载一个 PDF 文件，但是你将 `Content-Disposition` 的值设置为 `inline` 或者没设置，你的响应头对应如下：
 
-
 ```
 Content-Type: application/pdf
 Content-Disposition: inline; filename="example.pdf"
 ```
 
-
 那么此时浏览器不会去下载这个文件，而是直接在浏览器中去打开这个 PDF 文件。相信这样的场景大家会熟悉，我们经常去浏览一个学术完整的 PDF 链接时都是直接在浏览器中打开 PDF 文件，而不是下载到本地，这就是设置了 `Content-Disposition: inline` 的原因（即使没设置它的默认值也是这个）。
 
-
 现在再来看下 `Content-Disposition: attachment`，这个是真正意义上的文件下载。还是以前面的响应头为例：
-
 
 ```
 Content-Type: application/pdf
 Content-Disposition: attachment; filename="example.pdf"
 ```
-
 
 此时，当服务器给客户端（通常是浏览器）响应时，它会有一个弹窗提示，提醒你保存文件。而保存的文件的默认名就是 `filename` 指定的值，当然该属性是非必须的，不设置也没关系。
 
@@ -169,9 +149,7 @@ Content-Disposition: attachment; filename="example.pdf"
 
 [Content-Disposition:What are the differences between "inline" and "attachment"?](https://stackoverflow.com/questions/1395151/content-dispositionwhat-are-the-differences-between-inline-and-attachment)
 
-
 总的来说，当 `Content-Disposition` 作为响应头时的主要功能就是用于文件下载！
-
 
 ## 关于文件下载的问题
 
@@ -179,19 +157,15 @@ Content-Disposition: attachment; filename="example.pdf"
 
 所以，当我们遇到在 IE 上有问题是通常是做过有关禁止浏览器缓存的操做，所以我们最好还要加上下面的响应头：
 
-
 ```
 Pragma: No-cache
 Cache-Control: No-cache
 Expires: 0
 ```
 
-
 你以为就这一个问题，不知道你有没有遇到过文件下载出现乱码的问题，关于这个问题的解决方案在 [阿里云·开发者社区](https://developer.aliyun.com) 中有一篇文章说了该如何解决该问题（链接如下），其他的就不做多数了。
 
-
 [HTTP协议header中Content-Disposition中文文件名乱码](https://developer.aliyun.com/article/38945)
-
 
 # 资源链接
 
